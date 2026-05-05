@@ -1,24 +1,27 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#2563eb",
+        },
+        headerTintColor: "#ffffff",
+        headerTitleStyle: {
+          fontWeight: "700",
+        },
+        contentStyle: {
+          backgroundColor: "#f3f4f6",
+        },
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Dashboard" }} />
+      <Stack.Screen name="add-workout" options={{ title: "Add Workout" }} />
+      <Stack.Screen name="history" options={{ title: "Workout History" }} />
+      <Stack.Screen name="workout-detail" options={{ title: "Workout Detail" }} />
+      <Stack.Screen name="progress" options={{ title: "Progress" }} />
+      <Stack.Screen name="profile" options={{ title: "Profile" }} />
+    </Stack>
   );
 }

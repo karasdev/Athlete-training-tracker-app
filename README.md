@@ -48,3 +48,14 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+cd C:\Users\Administrator\Documents\workspace\my-mobile-app
+adb kill-server
+adb start-server
+adb connect 127.0.0.1:5555
+adb devices
+npx expo start --localhost
+
+another shell
+adb -s 127.0.0.1:5555 reverse tcp:8081 tcp:8081
+adb -s 127.0.0.1:5555 shell am start -a android.intent.action.VIEW -d "exp://127.0.0.1:8081"
