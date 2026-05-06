@@ -1,11 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import { Workout } from "../types/workout";
 
 const WORKOUTS_KEY = "workouts";
 
 export async function getWorkouts(): Promise<Workout[]> {
   try {
-    const data = await AsyncStorage.getItem(WORKOUTS_KEY);
+    const data = await SecureStore.getItemAsync(WORKOUTS_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
     console.log("Failed to load workouts:", error);
@@ -15,7 +15,7 @@ export async function getWorkouts(): Promise<Workout[]> {
 
 export async function saveWorkouts(workouts: Workout[]) {
   try {
-    await AsyncStorage.setItem(WORKOUTS_KEY, JSON.stringify(workouts));
+    await SecureStore.setItemAsync(WORKOUTS_KEY, JSON.stringify(workouts));
   } catch (error) {
     console.log("Failed to save workouts:", error);
   }
