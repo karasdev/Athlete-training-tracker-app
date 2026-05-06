@@ -1,6 +1,6 @@
 import { router, Stack, useSegments } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
@@ -33,33 +33,47 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   return children;
 }
 
+function AppStack() {
+  const { user } = useAuth();
+
+  return (
+    <Stack
+      screenOptions={{
+        headerRight: () =>
+          user?.email ? (
+            <Text numberOfLines={1} style={styles.headerEmail}>
+              {user.email}
+            </Text>
+          ) : null,
+        headerStyle: {
+          backgroundColor: "#2563eb",
+        },
+        headerTintColor: "#ffffff",
+        headerTitleStyle: {
+          fontWeight: "700",
+        },
+        contentStyle: {
+          backgroundColor: "#f3f4f6",
+        },
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Dashboard" }} />
+      <Stack.Screen name="add-workout" options={{ title: "Add Workout" }} />
+      <Stack.Screen name="history" options={{ title: "Workout History" }} />
+      <Stack.Screen name="workout-detail" options={{ title: "Workout Detail" }} />
+      <Stack.Screen name="progress" options={{ title: "Progress" }} />
+      <Stack.Screen name="profile" options={{ title: "Profile" }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="register" options={{ headerShown: false }} />
+    </Stack>
+  );
+}
+
 export default function RootLayout() {
   return (
     <AuthProvider>
       <AuthGate>
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#2563eb",
-            },
-            headerTintColor: "#ffffff",
-            headerTitleStyle: {
-              fontWeight: "700",
-            },
-            contentStyle: {
-              backgroundColor: "#f3f4f6",
-            },
-          }}
-        >
-          <Stack.Screen name="index" options={{ title: "Dashboard" }} />
-          <Stack.Screen name="add-workout" options={{ title: "Add Workout" }} />
-          <Stack.Screen name="history" options={{ title: "Workout History" }} />
-          <Stack.Screen name="workout-detail" options={{ title: "Workout Detail" }} />
-          <Stack.Screen name="progress" options={{ title: "Progress" }} />
-          <Stack.Screen name="profile" options={{ title: "Profile" }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="register" options={{ headerShown: false }} />
-        </Stack>
+        <AppStack />
       </AuthGate>
     </AuthProvider>
   );
@@ -71,5 +85,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f4f6",
     flex: 1,
     justifyContent: "center",
+  },
+  headerEmail: {
+    color: "#ffffff",
+    fontSize: 12,
+    fontWeight: "700",
+    maxWidth: 150,
   },
 });
