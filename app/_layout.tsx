@@ -1,6 +1,6 @@
 import { router, Stack, useSegments } from "expo-router";
-import { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
@@ -33,18 +33,57 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   return children;
 }
 
-function AppStack() {
-  const { user } = useAuth();
+function AccountMenu() {
+  const { logout, user } = useAuth();
+  const [menuVisible, setMenuVisible] = useState(false);
 
+  async function handleLogout() {
+    setMenuVisible(false);
+    await logout();
+    router.replace("/login");
+  }
+
+  if (!user?.email) {
+    return null;
+  }
+
+  return (
+    <View>
+      <Pressable
+        onPress={() => setMenuVisible(true)}
+        style={({ pressed }) => [styles.headerAccountButton, pressed && styles.pressed]}
+      >
+        <Text numberOfLines={1} style={styles.headerEmail}>
+          {user.email}
+        </Text>
+        <Text style={styles.headerChevron}>v</Text>
+      </Pressable>
+
+      <Modal transparent visible={menuVisible} animationType="fade">
+        <Pressable style={styles.menuOverlay} onPress={() => setMenuVisible(false)}>
+          <View style={styles.accountMenu}>
+            <Text style={styles.menuLabel}>Signed in as</Text>
+            <Text numberOfLines={1} style={styles.menuEmail}>
+              {user.email}
+            </Text>
+            <Pressable
+              onPress={handleLogout}
+              style={({ pressed }) => [styles.logoutButton, pressed && styles.pressed]}
+            >
+              <Text style={styles.logoutText}>Log out</Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
+    </View>
+  );
+}
+
+function AppStack() {
   return (
     <Stack
       screenOptions={{
-        headerRight: () =>
-          user?.email ? (
-            <Text numberOfLines={1} style={styles.headerEmail}>
-              {user.email}
-            </Text>
-          ) : null,
+        headerRight: () => <AccountMenu />,
         headerStyle: {
           backgroundColor: "#2563eb",
         },
@@ -86,10 +125,69 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  headerAccountButton: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 6,
+    maxWidth: 170,
+    paddingVertical: 6,
+  },
   headerEmail: {
     color: "#ffffff",
     fontSize: 12,
     fontWeight: "700",
     maxWidth: 150,
+  },
+  headerChevron: {
+    color: "#ffffff",
+    fontSize: 10,
+    fontWeight: "800",
+  },
+  menuOverlay: {
+    flex: 1,
+  },
+  accountMenu: {
+    backgroundColor: "#ffffff",
+    borderColor: "#e5e7eb",
+    borderRadius: 8,
+    borderWidth: 1,
+    elevation: 6,
+    padding: 12,
+    position: "absolute",
+    right: 12,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    top: 54,
+    width: 230,
+  },
+  menuLabel: {
+    color: "#6b7280",
+    fontSize: 12,
+    fontWeight: "700",
+    marginBottom: 4,
+    textTransform: "uppercase",
+  },
+  menuEmail: {
+    color: "#111827",
+    fontSize: 14,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  logoutButton: {
+    backgroundColor: "#fee2e2",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  logoutText: {
+    color: "#dc2626",
+    fontSize: 14,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  pressed: {
+    opacity: 0.75,
   },
 });
