@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
+import { Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
-import PrimaryButton from "../components/PrimaryButton";
-import { addWorkout } from "../utils/workoutStorage";
-import { Workout } from "../types/workout";
+import PrimaryButton from "../../components/PrimaryButton";
+import { addWorkout } from "../../utils/workoutStorage";
+import { Workout } from "../../types/workout";
 
 export default function AddWorkoutScreen() {
   const [type, setType] = useState("");

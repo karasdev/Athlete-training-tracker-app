@@ -13,16 +13,16 @@ export default function WorkoutDetailScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      async function loadWorkout() {
+        if (!workoutId) return;
+
+        const data = await getWorkoutById(workoutId);
+        setWorkout(data || null);
+      }
+
       loadWorkout();
     }, [workoutId])
   );
-
-  async function loadWorkout() {
-    if (!workoutId) return;
-
-    const data = await getWorkoutById(workoutId);
-    setWorkout(data || null);
-  }
 
   async function handleDelete() {
     if (!workoutId) return;

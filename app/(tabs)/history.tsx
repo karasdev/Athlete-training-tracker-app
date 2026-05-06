@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, StyleSheet } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
-import WorkoutCard from "../components/WorkoutCard";
-import { getWorkouts } from "../utils/workoutStorage";
-import { Workout } from "../types/workout";
+import WorkoutCard from "../../components/WorkoutCard";
+import { getWorkouts } from "../../utils/workoutStorage";
+import { Workout } from "../../types/workout";
 
 export default function HistoryScreen() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);

@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import PrimaryButton from "../components/PrimaryButton";
-import { useAuth } from "../contexts/AuthContext";
-import { getProfile, saveProfile } from "../utils/profileStorage";
+import PrimaryButton from "../../components/PrimaryButton";
+import { useAuth } from "../../contexts/AuthContext";
+import { getProfile, saveProfile } from "../../utils/profileStorage";
 
 export default function ProfileScreen() {
   const [name, setName] = useState("");
