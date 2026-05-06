@@ -1,11 +1,17 @@
 import * as SecureStore from "expo-secure-store";
+import { getAuth } from "firebase/auth";
 import { Workout } from "../types/workout";
 
 const WORKOUTS_KEY = "workouts";
 
+function getWorkoutsKey() {
+  const userId = getAuth().currentUser?.uid;
+  return userId ? `${WORKOUTS_KEY}:${userId}` : WORKOUTS_KEY;
+}
+
 export async function getWorkouts(): Promise<Workout[]> {
   try {
-    const data = await SecureStore.getItemAsync(WORKOUTS_KEY);
+    const data = await SecureStore.getItemAsync(getWorkoutsKey());
     return data ? JSON.parse(data) : [];
   } catch (error) {
     console.log("Failed to load workouts:", error);
@@ -15,7 +21,7 @@ export async function getWorkouts(): Promise<Workout[]> {
 
 export async function saveWorkouts(workouts: Workout[]) {
   try {
-    await SecureStore.setItemAsync(WORKOUTS_KEY, JSON.stringify(workouts));
+    await SecureStore.setItemAsync(getWorkoutsKey(), JSON.stringify(workouts));
   } catch (error) {
     console.log("Failed to save workouts:", error);
   }

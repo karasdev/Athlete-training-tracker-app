@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import { getAuth } from "firebase/auth";
 
 export type Profile = {
   name: string;
@@ -8,9 +9,14 @@ export type Profile = {
 
 const PROFILE_KEY = "profile";
 
+function getProfileKey() {
+  const userId = getAuth().currentUser?.uid;
+  return userId ? `${PROFILE_KEY}:${userId}` : PROFILE_KEY;
+}
+
 export async function getProfile(): Promise<Profile> {
   try {
-    const data = await SecureStore.getItemAsync(PROFILE_KEY);
+    const data = await SecureStore.getItemAsync(getProfileKey());
 
     if (data) {
       return JSON.parse(data);
@@ -34,7 +40,7 @@ export async function getProfile(): Promise<Profile> {
 
 export async function saveProfile(profile: Profile) {
   try {
-    await SecureStore.setItemAsync(PROFILE_KEY, JSON.stringify(profile));
+    await SecureStore.setItemAsync(getProfileKey(), JSON.stringify(profile));
   } catch (error) {
     console.log("Failed to save profile:", error);
   }
