@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-nati
 import { router } from "expo-router";
 import { useAuth } from "../contexts/AuthContext";
 import PrimaryButton from "../components/PrimaryButton";
+import { registerForPushNotificationsAsync } from "../utils/notifications";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,17 @@ export default function LoginScreen() {
 
     try {
       await login(email.trim(), password);
+
+      try {
+        const token = await registerForPushNotificationsAsync();
+        // console.log("Expo push token:", token);
+        if (token) {
+          console.log("Expo push token:", token);
+        }
+      } catch (notificationError) {
+        console.log("Failed to register push notifications:", notificationError);
+      }
+
       router.replace("/");
     } catch (error: any) {
       Alert.alert("Login Failed", error.message);
