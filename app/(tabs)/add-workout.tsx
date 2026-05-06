@@ -38,6 +38,11 @@ export default function AddWorkoutScreen() {
 
     await addWorkout(workout);
 
+    setType("");
+    setDuration("");
+    setIntensity("");
+    setNotes("");
+
     Alert.alert("Success", "Workout saved successfully.");
     router.replace("/history");
   }

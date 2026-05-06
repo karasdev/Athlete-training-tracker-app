@@ -11,7 +11,7 @@ const PROFILE_KEY = "profile";
 
 function getProfileKey() {
   const userId = getAuth().currentUser?.uid;
-  return userId ? `${PROFILE_KEY}:${userId}` : PROFILE_KEY;
+  return userId ? `${PROFILE_KEY}_${userId}` : PROFILE_KEY;
 }
 
 export async function getProfile(): Promise<Profile> {

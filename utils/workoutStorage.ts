@@ -6,7 +6,7 @@ const WORKOUTS_KEY = "workouts";
 
 function getWorkoutsKey() {
   const userId = getAuth().currentUser?.uid;
-  return userId ? `${WORKOUTS_KEY}:${userId}` : WORKOUTS_KEY;
+  return userId ? `${WORKOUTS_KEY}_${userId}` : WORKOUTS_KEY;
 }
 
 export async function getWorkouts(): Promise<Workout[]> {
