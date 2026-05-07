@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
-import { useAuth } from "../contexts/AuthContext";
+import { db, useAuth } from "../contexts/AuthContext";
 import PrimaryButton from "../components/PrimaryButton";
 import { registerForPushNotificationsAsync } from "../utils/notifications";
+import { saveFcmToken } from "../utils/saveFcmToken";
+import { getAuth } from "firebase/auth";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -21,9 +23,12 @@ export default function LoginScreen() {
 
       try {
         const token = await registerForPushNotificationsAsync();
-        // console.log("Expo push token:", token);
         if (token) {
-          console.log("Expo push token:", token);
+          console.log("Push token:", token);
+          const uid = getAuth().currentUser?.uid;
+          if (uid) {
+            await saveFcmToken(db, uid, token);
+          }
         }
       } catch (notificationError) {
         console.log("Failed to register push notifications:", notificationError);

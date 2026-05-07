@@ -25,8 +25,10 @@ export async function registerForPushNotificationsAsync() {
     });
   }
 
-  if (!Device.isDevice) {
-    console.log("Push notifications require a real device.");
+  // NOTE: We allow Android emulators (e.g., LDPlayer) as long as Google Play services is present.
+  // Device.isDevice is false on emulators, so we must not block here.
+  if (Platform.OS !== "android" && !Device.isDevice) {
+    console.log("Push notifications on iOS require a real device.");
     return null;
   }
 
@@ -43,6 +45,13 @@ export async function registerForPushNotificationsAsync() {
     return null;
   }
 
+  if (Platform.OS === "android") {
+    // Returns the native device push token. On Android this is an FCM registration token.
+    const token = await Notifications.getDevicePushTokenAsync();
+    return token.data;
+  }
+
+  // Fallback for iOS: keep using Expo push token unless/until we add APNs + direct send.
   const projectId =
     Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
 

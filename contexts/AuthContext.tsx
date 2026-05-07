@@ -7,7 +7,9 @@ import {
   signOut,
   User,
 } from "firebase/auth";
+import { initializeFirestore } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { removeFcmTokenForCurrentDevice } from "../utils/saveFcmToken";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCWkysqGzqlLHbzNNIHHXwvAJc7Mw786vc",
@@ -21,6 +23,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+// Long-polling improves reliability on Android emulators (e.g., LDPlayer)
+// where Firestore's default streaming transport can stall.
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
 
 type AuthContextType = {
   user: User | null;
@@ -54,6 +61,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await createUserWithEmailAndPassword(auth, email, password);
       },
       logout: async () => {
+        const uid = auth.currentUser?.uid;
+        if (uid) {
+          await removeFcmTokenForCurrentDevice(db, uid);
+        }
         await signOut(auth);
       },
     }),

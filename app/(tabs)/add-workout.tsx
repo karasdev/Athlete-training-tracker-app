@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import PrimaryButton from "../../components/PrimaryButton";
+import { db } from "../../contexts/AuthContext";
 import { addWorkout } from "../../utils/workoutStorage";
 import { Workout } from "../../types/workout";
 
@@ -37,6 +40,19 @@ export default function AddWorkoutScreen() {
     };
 
     await addWorkout(workout);
+
+    try {
+      const uid = getAuth().currentUser?.uid;
+      if (uid) {
+        await addDoc(collection(db, "users", uid, "notifications"), {
+          title: "Workout logged",
+          body: `Great job! +${workout.duration} min of ${workout.type}.`,
+          createdAt: serverTimestamp(),
+        });
+      }
+    } catch (notifyError) {
+      console.log("Failed to enqueue workout notification:", notifyError);
+    }
 
     setType("");
     setDuration("");
