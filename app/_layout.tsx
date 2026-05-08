@@ -11,7 +11,8 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (loading) return;
 
-    const isAuthScreen = segments[0] === "login" || segments[0] === "register";
+    const isAuthScreen =
+      segments[0] === "login" || segments[0] === "register" || segments[0] === "forgot-password";
 
     if (!user && !isAuthScreen) {
       router.replace("/login");
@@ -55,6 +56,7 @@ function AppStack() {
       <Stack.Screen name="workout-detail" options={{ title: "Workout Detail" }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
     </Stack>
   );
 }

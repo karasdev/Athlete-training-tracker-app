@@ -73,6 +73,10 @@ export default function LoginScreen() {
 
       <PrimaryButton title="Login" onPress={handleLogin} />
 
+      <Text style={styles.forgotLink} onPress={() => router.push("/forgot-password")}>
+        Forgot password?
+      </Text>
+
       <Text style={styles.link} onPress={() => router.push("/register")}>
         Do not have an account? Register here
       </Text>
@@ -114,5 +118,12 @@ const styles = StyleSheet.create({
     color: "#2563eb",
     marginTop: 20,
     fontSize: 16,
+  },
+  forgotLink: {
+    textAlign: "center",
+    color: "#2563eb",
+    marginTop: 4,
+    fontSize: 14,
+    fontWeight: "700",
   },
 });

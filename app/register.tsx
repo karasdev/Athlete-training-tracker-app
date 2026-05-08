@@ -1,17 +1,34 @@
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
-import { useAuth } from "../contexts/AuthContext";
+import { db, useAuth } from "../contexts/AuthContext";
 import PrimaryButton from "../components/PrimaryButton";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import SHA256 from "crypto-js/sha256";
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [favoriteAnimal, setFavoriteAnimal] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [personalInfo, setPersonalInfo] = useState("");
   const { register, loading } = useAuth();
 
+  function normalizeAnswer(value: string) {
+    return value.trim().toLowerCase();
+  }
+
   const handleRegister = async () => {
-    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim() ||
+      !favoriteAnimal.trim() ||
+      !birthday.trim() ||
+      !personalInfo.trim()
+    ) {
       Alert.alert("Error", "Please fill all fields");
       return;
     }
@@ -28,6 +45,25 @@ export default function RegisterScreen() {
 
     try {
       await register(email.trim(), password);
+
+      const uid = getAuth().currentUser?.uid;
+      if (uid) {
+        await setDoc(
+          doc(db, "users", uid),
+          {
+            email: email.trim().toLowerCase(),
+            recovery: {
+              favoriteAnimalHash: SHA256(normalizeAnswer(favoriteAnimal)).toString(),
+              birthdayHash: SHA256(normalizeAnswer(birthday)).toString(),
+              personalInfoHash: SHA256(normalizeAnswer(personalInfo)).toString(),
+              updatedAt: serverTimestamp(),
+            },
+            createdAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      }
+
       Alert.alert("Success", "Account created successfully!");
       router.replace("/");
     } catch (error: any) {
@@ -75,6 +111,35 @@ export default function RegisterScreen() {
         secureTextEntry
       />
 
+      <Text style={styles.sectionTitle}>Account recovery</Text>
+
+      <Text style={styles.label}>Favorite animal</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Example: cat"
+        value={favoriteAnimal}
+        onChangeText={setFavoriteAnimal}
+        autoCapitalize="none"
+      />
+
+      <Text style={styles.label}>Birthday</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="YYYY-MM-DD"
+        value={birthday}
+        onChangeText={setBirthday}
+        autoCapitalize="none"
+      />
+
+      <Text style={styles.label}>Personal info (example: your first school)</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter an answer you will remember"
+        value={personalInfo}
+        onChangeText={setPersonalInfo}
+        autoCapitalize="none"
+      />
+
       <PrimaryButton title="Register" onPress={handleRegister} />
 
       <Text style={styles.link} onPress={() => router.push("/login")}>
@@ -103,6 +168,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "800",
+    marginTop: 10,
+    marginBottom: 10,
   },
   input: {
     backgroundColor: "#ffffff",

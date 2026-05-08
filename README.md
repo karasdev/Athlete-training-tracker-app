@@ -176,5 +176,5 @@ adb -s 127.0.0.1:5555 shell am start -a android.intent.action.VIEW -d "exp://127
 
 ```powershell
 $env:FIREBASE_PROJECT_ID="my-mobile-app-c9b3f"
-$env:GOOGLE_APPLICATION_CREDENTIALS="C:\FULL\PATH\to\service-account.json"
+$env:GOOGLE_APPLICATION_CREDENTIALS="C:\service-account.json"
 npm run watch:push
