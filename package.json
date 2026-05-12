@@ -3,8 +3,8 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "node ./scripts/setup-android-emulator.js && expo start --dev-client --android --localhost",
-    "start:clear": "node ./scripts/setup-android-emulator.js && expo start --dev-client --android --localhost -c",
+    "start": "node ./scripts/start-android-dev-client.js",
+    "start:clear": "node ./scripts/start-android-dev-client.js --clear",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "npm run start",
     "ios": "expo start --ios",
