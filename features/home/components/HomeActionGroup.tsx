@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 type ActionItem = {
@@ -18,8 +18,6 @@ const actions: ActionItem[] = [
 
 export default function HomeActionGroup() {
   const [expanded, setExpanded] = useState(false);
-  const [panelTop, setPanelTop] = useState(0);
-  const folderRef = useRef<View>(null);
 
   function openAction(href: Href) {
     setExpanded(false);
@@ -32,64 +30,47 @@ export default function HomeActionGroup() {
       return;
     }
 
-    folderRef.current?.measureInWindow((_, y, __, height) => {
-      setPanelTop(y + height + 8);
-      setExpanded(true);
-    });
+    setExpanded(true);
   }
 
   return (
     <View style={styles.container}>
-      <View ref={folderRef} style={styles.group}>
+      <View>
         <Pressable
           onPress={toggleFolder}
-          style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+          style={({ pressed }) => [styles.folderTile, pressed && styles.tilePressed]}
         >
-          <View style={styles.folderIconWrap}>
-            <Ionicons
-              name={expanded ? "folder-open-outline" : "folder-outline"}
-              size={22}
-              color="#2563eb"
-            />
+          <View style={styles.folderPreview}>
+            {actions.map((action) => (
+              <View key={action.href.toString()} style={styles.previewIcon}>
+                <Ionicons name={action.icon} size={16} color="#2563eb" />
+              </View>
+            ))}
           </View>
-          <View style={styles.folderTextWrap}>
-            <Text style={styles.label}>App</Text>
-            <Text style={styles.meta}>
-              {expanded ? "Choose a section" : "4 sections"}
-            </Text>
-          </View>
-          <Ionicons
-            name={expanded ? "chevron-up" : "chevron-down"}
-            size={18}
-            color="#9ca3af"
-          />
+          <Text style={styles.folderLabel}>App</Text>
         </Pressable>
       </View>
 
       <Modal transparent visible={expanded} animationType="fade">
         <Pressable style={styles.backdrop} onPress={() => setExpanded(false)}>
-          <View style={[styles.unfoldedPanel, { top: panelTop }]}>
-            {actions.map((action, index) => {
-              const isLast = index === actions.length - 1;
-
-              return (
+          <View style={styles.unfoldedPanel}>
+            <Text style={styles.panelTitle}>App</Text>
+            <View style={styles.appGrid}>
+              {actions.map((action) => (
                 <Pressable
                   key={action.href.toString()}
                   onPress={() => openAction(action.href)}
-                  style={({ pressed }) => [
-                    styles.childRow,
-                    !isLast && styles.rowDivider,
-                    pressed && styles.rowPressed,
-                  ]}
+                  style={({ pressed }) => [styles.appTile, pressed && styles.tilePressed]}
                 >
-                  <View style={styles.iconWrap}>
-                    <Ionicons name={action.icon} size={21} color="#2563eb" />
+                  <View style={styles.appIconWrap}>
+                    <Ionicons name={action.icon} size={28} color="#2563eb" />
                   </View>
-                  <Text style={styles.label}>{action.label}</Text>
-                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                  <Text numberOfLines={2} style={styles.appLabel}>
+                    {action.label}
+                  </Text>
                 </Pressable>
-              );
-            })}
+              ))}
+            </View>
           </View>
         </Pressable>
       </Modal>
@@ -101,82 +82,102 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
   },
-  group: {
-    backgroundColor: "#ffffff",
-    borderColor: "#e5e7eb",
-    borderRadius: 8,
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  row: {
+  appGrid: {
     alignItems: "center",
     flexDirection: "row",
-    minHeight: 58,
-    paddingHorizontal: 14,
+    flexWrap: "wrap",
+    justifyContent: "center",
+    rowGap: 18,
+  },
+  appIconWrap: {
+    alignItems: "center",
+    backgroundColor: "#eff6ff",
+    borderRadius: 14,
+    height: 58,
+    justifyContent: "center",
+    marginBottom: 8,
+    width: 58,
+  },
+  appLabel: {
+    color: "#111827",
+    fontSize: 12,
+    fontWeight: "700",
+    lineHeight: 15,
+    minHeight: 30,
+    textAlign: "center",
+  },
+  appTile: {
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 100,
+    width: "50%",
   },
   backdrop: {
+    alignItems: "center",
+    backgroundColor: "rgba(17, 24, 39, 0.22)",
     flex: 1,
-    paddingHorizontal: 20,
-  },
-  childRow: {
-    alignItems: "center",
-    flexDirection: "row",
-    minHeight: 54,
-    paddingLeft: 26,
-    paddingRight: 14,
-  },
-  rowDivider: {
-    borderBottomColor: "#eef2f7",
-    borderBottomWidth: 1,
-  },
-  rowPressed: {
-    backgroundColor: "#eff6ff",
-  },
-  iconWrap: {
-    alignItems: "center",
-    backgroundColor: "#eff6ff",
-    borderRadius: 8,
-    height: 34,
     justifyContent: "center",
-    marginRight: 12,
-    width: 34,
+    padding: 24,
   },
-  folderIconWrap: {
-    alignItems: "center",
-    backgroundColor: "#dbeafe",
-    borderRadius: 8,
-    height: 36,
-    justifyContent: "center",
-    marginRight: 12,
-    width: 36,
-  },
-  folderTextWrap: {
-    flex: 1,
-  },
-  label: {
+  folderLabel: {
     color: "#111827",
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 13,
+    fontWeight: "800",
+    marginTop: 8,
+    textAlign: "center",
   },
-  meta: {
-    color: "#6b7280",
-    fontSize: 12,
-    fontWeight: "600",
-    marginTop: 2,
+  folderPreview: {
+    alignContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderColor: "#dbeafe",
+    borderRadius: 16,
+    borderWidth: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    height: 82,
+    justifyContent: "center",
+    padding: 9,
+    width: 82,
+  },
+  folderTile: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    minHeight: 116,
+    justifyContent: "center",
+    width: 92,
+  },
+  panelTitle: {
+    color: "#111827",
+    fontSize: 18,
+    fontWeight: "800",
+    marginBottom: 18,
+    textAlign: "center",
+  },
+  previewIcon: {
+    alignItems: "center",
+    backgroundColor: "#eff6ff",
+    borderRadius: 8,
+    height: 28,
+    justifyContent: "center",
+    margin: 3,
+    width: 28,
+  },
+  tilePressed: {
+    opacity: 0.72,
   },
   unfoldedPanel: {
     backgroundColor: "#ffffff",
     borderColor: "#e5e7eb",
-    borderRadius: 8,
+    borderRadius: 20,
     borderWidth: 1,
     elevation: 8,
-    left: 20,
-    overflow: "hidden",
-    position: "absolute",
-    right: 20,
+    maxWidth: 320,
+    padding: 22,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.16,
     shadowRadius: 12,
+    width: "100%",
   },
 });
