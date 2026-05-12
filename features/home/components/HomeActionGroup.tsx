@@ -41,11 +41,20 @@ export default function HomeActionGroup() {
           style={({ pressed }) => [styles.folderTile, pressed && styles.tilePressed]}
         >
           <View style={styles.folderPreview}>
-            {actions.map((action) => (
-              <View key={action.href.toString()} style={styles.previewIcon}>
-                <Ionicons name={action.icon} size={16} color="#2563eb" />
-              </View>
-            ))}
+            <View style={styles.previewRow}>
+              {actions.slice(0, 2).map((action) => (
+                <View key={action.href.toString()} style={styles.previewIcon}>
+                  <Ionicons name={action.icon} size={17} color="#2563eb" />
+                </View>
+              ))}
+            </View>
+            <View style={styles.previewRow}>
+              {actions.slice(2).map((action) => (
+                <View key={action.href.toString()} style={styles.previewIcon}>
+                  <Ionicons name={action.icon} size={17} color="#2563eb" />
+                </View>
+              ))}
+            </View>
           </View>
           <Text style={styles.folderLabel}>App</Text>
         </Pressable>
@@ -80,36 +89,39 @@ export default function HomeActionGroup() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginBottom: 22,
+    marginTop: 24,
   },
   appGrid: {
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    rowGap: 18,
+    rowGap: 20,
   },
   appIconWrap: {
     alignItems: "center",
-    backgroundColor: "#eff6ff",
-    borderRadius: 14,
-    height: 58,
+    backgroundColor: "#eef4ff",
+    borderColor: "#dbeafe",
+    borderRadius: 18,
+    borderWidth: 1,
+    height: 64,
     justifyContent: "center",
-    marginBottom: 8,
-    width: 58,
+    marginBottom: 9,
+    width: 64,
   },
   appLabel: {
     color: "#111827",
-    fontSize: 12,
-    fontWeight: "700",
-    lineHeight: 15,
-    minHeight: 30,
+    fontSize: 13,
+    fontWeight: "800",
+    lineHeight: 16,
+    minHeight: 32,
     textAlign: "center",
   },
   appTile: {
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 100,
+    minHeight: 112,
     width: "50%",
   },
   backdrop: {
@@ -121,31 +133,32 @@ const styles = StyleSheet.create({
   },
   folderLabel: {
     color: "#111827",
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "800",
-    marginTop: 8,
+    marginTop: 9,
     textAlign: "center",
   },
   folderPreview: {
-    alignContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dbeafe",
-    borderRadius: 16,
+    borderColor: "#d1d5db",
+    borderRadius: 22,
     borderWidth: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    height: 82,
+    elevation: 2,
+    height: 96,
     justifyContent: "center",
-    padding: 9,
-    width: 82,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
+    width: 96,
   },
   folderTile: {
     alignItems: "center",
     alignSelf: "flex-start",
-    minHeight: 116,
     justifyContent: "center",
-    width: 92,
+    minHeight: 128,
+    width: 108,
   },
   panelTitle: {
     color: "#111827",
@@ -156,12 +169,16 @@ const styles = StyleSheet.create({
   },
   previewIcon: {
     alignItems: "center",
-    backgroundColor: "#eff6ff",
-    borderRadius: 8,
-    height: 28,
+    backgroundColor: "#eef4ff",
+    borderRadius: 10,
+    height: 31,
     justifyContent: "center",
-    margin: 3,
-    width: 28,
+    width: 31,
+  },
+  previewRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginVertical: 4,
   },
   tilePressed: {
     opacity: 0.72,
@@ -172,8 +189,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     elevation: 8,
-    maxWidth: 320,
-    padding: 22,
+    maxWidth: 330,
+    padding: 24,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.16,
