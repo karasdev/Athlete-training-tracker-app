@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
-import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 type ActionItem = {
   href: Href;
@@ -18,17 +18,32 @@ const actions: ActionItem[] = [
 
 export default function HomeActionGroup() {
   const [expanded, setExpanded] = useState(false);
+  const [panelTop, setPanelTop] = useState(0);
+  const folderRef = useRef<View>(null);
+
+  function openAction(href: Href) {
+    setExpanded(false);
+    router.push(href);
+  }
+
+  function toggleFolder() {
+    if (expanded) {
+      setExpanded(false);
+      return;
+    }
+
+    folderRef.current?.measureInWindow((_, y, __, height) => {
+      setPanelTop(y + height + 8);
+      setExpanded(true);
+    });
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.group}>
+      <View ref={folderRef} style={styles.group}>
         <Pressable
-          onPress={() => setExpanded((current) => !current)}
-          style={({ pressed }) => [
-            styles.row,
-            expanded && styles.rowDivider,
-            pressed && styles.rowPressed,
-          ]}
+          onPress={toggleFolder}
+          style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
         >
           <View style={styles.folderIconWrap}>
             <Ionicons
@@ -49,15 +64,18 @@ export default function HomeActionGroup() {
             color="#9ca3af"
           />
         </Pressable>
+      </View>
 
-        {expanded
-          ? actions.map((action, index) => {
+      <Modal transparent visible={expanded} animationType="fade">
+        <Pressable style={styles.backdrop} onPress={() => setExpanded(false)}>
+          <View style={[styles.unfoldedPanel, { top: panelTop }]}>
+            {actions.map((action, index) => {
               const isLast = index === actions.length - 1;
 
               return (
                 <Pressable
                   key={action.href.toString()}
-                  onPress={() => router.push(action.href)}
+                  onPress={() => openAction(action.href)}
                   style={({ pressed }) => [
                     styles.childRow,
                     !isLast && styles.rowDivider,
@@ -71,9 +89,10 @@ export default function HomeActionGroup() {
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 </Pressable>
               );
-            })
-          : null}
-      </View>
+            })}
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -94,6 +113,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     minHeight: 58,
     paddingHorizontal: 14,
+  },
+  backdrop: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
   childRow: {
     alignItems: "center",
@@ -140,5 +163,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
     marginTop: 2,
+  },
+  unfoldedPanel: {
+    backgroundColor: "#ffffff",
+    borderColor: "#e5e7eb",
+    borderRadius: 8,
+    borderWidth: 1,
+    elevation: 8,
+    left: 20,
+    overflow: "hidden",
+    position: "absolute",
+    right: 20,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.16,
+    shadowRadius: 12,
   },
 });
