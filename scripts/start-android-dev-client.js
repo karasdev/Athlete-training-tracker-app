@@ -9,14 +9,16 @@ const androidHome =
     : undefined);
 
 const env = { ...process.env };
+const pathKey =
+  Object.keys(env).find((key) => key.toLowerCase() === "path") || "Path";
 
 if (androidHome) {
   env.ANDROID_HOME = androidHome;
   env.ANDROID_SDK_ROOT = androidHome;
-  env.PATH = [
+  env[pathKey] = [
     path.join(androidHome, "platform-tools"),
     path.join(androidHome, "emulator"),
-    env.PATH || "",
+    env[pathKey] || "",
   ].join(path.delimiter);
 }
 
@@ -54,7 +56,11 @@ if (process.argv.includes("--clear") || process.argv.includes("-c")) {
 }
 
 const expoCommand = process.platform === "win32" ? "npx.cmd" : "npx";
-const command = process.platform === "win32" ? "cmd.exe" : expoCommand;
+const command =
+  process.platform === "win32"
+    ? process.env.ComSpec ||
+      path.join(process.env.SystemRoot || "C:\\Windows", "System32", "cmd.exe")
+    : expoCommand;
 const args =
   process.platform === "win32"
     ? ["/d", "/s", "/c", [expoCommand, ...expoArgs].join(" ")]
