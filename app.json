@@ -20,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.karasdev.mymobileapp"
+      "package": "com.karasdev.mymobileapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
