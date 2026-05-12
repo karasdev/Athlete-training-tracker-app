@@ -12,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkoutApiService {
 
   private final WorkoutRepository workouts;
-  private final PushNotificationService push;
 
-  public WorkoutApiService(WorkoutRepository workouts, PushNotificationService push) {
+  public WorkoutApiService(WorkoutRepository workouts) {
     this.workouts = workouts;
-    this.push = push;
   }
 
   @Transactional
@@ -33,7 +31,5 @@ public class WorkoutApiService {
     w.setNotes(req.notes() != null ? req.notes() : "");
     w.setCreatedAt(created);
     workouts.save(w);
-
-    push.sendWorkoutLogged(user, req.type(), req.duration());
   }
 }

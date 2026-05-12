@@ -28,14 +28,13 @@ The app talks to the **Java REST API** (`extra.apiBaseUrl` in `app.json`, often 
 
 - **Registration and login** hit `POST /api/v1/auth/register` and `POST /api/v1/auth/login`. User rows are stored in PostgreSQL table **`app_users`** via Spring Data JPA (`AuthService.register` → `users.save(...)`).
 - Configure JDBC in `backend/src/main/resources/application.properties` (URL, user, password for your DB).
-- Push notifications are sent by the Spring backend through Firebase Admin. Download a Firebase service account JSON from Firebase Console and set `FIREBASE_SERVICE_ACCOUNT_PATH` to that local file path. Do not commit that service account file.
+- Workout-save notifications are local app notifications created on the device with `expo-notifications`; no external push service setup is required.
 - Run the API:
 
   ```bash
   cd backend
   # PowerShell example:
   # $env:DB_PASSWORD="your-postgres-password"
-  # $env:FIREBASE_SERVICE_ACCOUNT_PATH="C:\secrets\firebase-service-account.json"
   mvn spring-boot:run
   ```
 

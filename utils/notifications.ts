@@ -1,12 +1,6 @@
-import Constants, { ExecutionEnvironment } from "expo-constants";
-import * as Device from "expo-device";
 import { Platform } from "react-native";
 
-export async function registerForPushNotificationsAsync() {
-  if (Constants.executionEnvironment === ExecutionEnvironment.StoreClient) {
-    return null;
-  }
-
+async function ensureNotificationPermission() {
   const Notifications = await import("expo-notifications");
 
   Notifications.setNotificationHandler({
@@ -25,41 +19,26 @@ export async function registerForPushNotificationsAsync() {
     });
   }
 
-  // NOTE: We allow Android emulators (e.g., LDPlayer) as long as Google Play services is present.
-  // Device.isDevice is false on emulators, so we must not block here.
-  if (Platform.OS !== "android" && !Device.isDevice) {
-    console.log("Push notifications on iOS require a real device.");
-    return null;
-  }
-
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-
-  if (existingStatus !== "granted") {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
+  if (existingStatus === "granted") {
+    return Notifications;
   }
 
-  if (finalStatus !== "granted") {
-    console.log("Notification permission denied.");
-    return null;
+  const { status } = await Notifications.requestPermissionsAsync();
+  return status === "granted" ? Notifications : null;
+}
+
+export async function scheduleWorkoutSavedNotification(workoutType: string, duration: number) {
+  const Notifications = await ensureNotificationPermission();
+  if (!Notifications) {
+    return;
   }
 
-  if (Platform.OS === "android") {
-    // Returns the native device push token. On Android this is an FCM registration token.
-    const token = await Notifications.getDevicePushTokenAsync();
-    return token.data;
-  }
-
-  // Fallback for iOS: keep using Expo push token unless/until we add APNs + direct send.
-  const projectId =
-    Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
-
-  if (!projectId) {
-    console.log("EAS projectId not found.");
-    return null;
-  }
-
-  const token = await Notifications.getExpoPushTokenAsync({ projectId });
-  return token.data;
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Workout logged",
+      body: `${workoutType} workout saved (${duration} min)`,
+    },
+    trigger: null,
+  });
 }

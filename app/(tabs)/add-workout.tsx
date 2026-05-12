@@ -6,6 +6,7 @@ import { addWorkout } from "../../utils/workoutStorage";
 import { Workout } from "../../types/workout";
 import { apiFetch, throwIfNotOk } from "../../utils/api";
 import { useAuth } from "../../contexts/AuthContext";
+import { scheduleWorkoutSavedNotification } from "../../utils/notifications";
 
 export default function AddWorkoutScreen() {
   const { user } = useAuth();
@@ -59,8 +60,14 @@ export default function AddWorkoutScreen() {
         }),
       });
       await throwIfNotOk(res);
-    } catch (notifyError) {
-      console.log("Failed to sync workout or send notification:", notifyError);
+    } catch (syncError) {
+      console.log("Failed to sync workout:", syncError);
+    }
+
+    try {
+      await scheduleWorkoutSavedNotification(workout.type, workout.duration);
+    } catch (notificationError) {
+      console.log("Failed to show workout notification:", notificationError);
     }
 
     setType("");

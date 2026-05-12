@@ -3,8 +3,6 @@ import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-nati
 import { router } from "expo-router";
 import { useAuth } from "../contexts/AuthContext";
 import PrimaryButton from "../components/PrimaryButton";
-import { registerForPushNotificationsAsync } from "../utils/notifications";
-import { saveFcmToken } from "../utils/saveFcmToken";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -19,17 +17,6 @@ export default function LoginScreen() {
 
     try {
       await login(email.trim(), password);
-
-      try {
-        const token = await registerForPushNotificationsAsync();
-        if (token) {
-          console.log("Push token:", token);
-          await saveFcmToken(token);
-        }
-      } catch (notificationError) {
-        console.log("Failed to register push notifications:", notificationError);
-      }
-
       router.replace("/");
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Login failed";

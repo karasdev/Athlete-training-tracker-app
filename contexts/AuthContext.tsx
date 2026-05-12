@@ -7,7 +7,6 @@ import {
   StoredUser,
 } from "../utils/authStorage";
 import { apiFetch, apiFetchJson } from "../utils/api";
-import { removeFcmTokenForCurrentDevice } from "../utils/saveFcmToken";
 
 type AuthContextType = {
   user: StoredUser | null;
@@ -113,7 +112,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(next);
       },
       logout: async () => {
-        await removeFcmTokenForCurrentDevice();
         await clearAuth();
         setUser(null);
       },
