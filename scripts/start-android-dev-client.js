@@ -47,14 +47,20 @@ if (!devices.ok || !devices.output.includes("device")) {
   }
 }
 
-const expoCommand = process.platform === "win32" ? "npx.cmd" : "npx";
 const expoArgs = ["expo", "start", "--dev-client", "--android", "--localhost"];
 
 if (process.argv.includes("--clear") || process.argv.includes("-c")) {
   expoArgs.push("--clear");
 }
 
-const expo = spawn(expoCommand, expoArgs, {
+const expoCommand = process.platform === "win32" ? "npx.cmd" : "npx";
+const command = process.platform === "win32" ? "cmd.exe" : expoCommand;
+const args =
+  process.platform === "win32"
+    ? ["/d", "/s", "/c", [expoCommand, ...expoArgs].join(" ")]
+    : expoArgs;
+
+const expo = spawn(command, args, {
   env,
   stdio: "inherit",
 });
