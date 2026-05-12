@@ -3,10 +3,10 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --go",
-    "start:clear": "expo start --go -c",
+    "start": "node ./scripts/setup-android-emulator.js && expo start --dev-client --android --localhost",
+    "start:clear": "node ./scripts/setup-android-emulator.js && expo start --dev-client --android --localhost -c",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "node ./scripts/setup-android-emulator.js && node ./scripts/open-android-studio-expo-go.js && expo start --go",
+    "android": "npm run start",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint"

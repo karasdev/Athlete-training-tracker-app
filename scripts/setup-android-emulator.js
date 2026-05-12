@@ -1,4 +1,22 @@
 const { spawnSync } = require("child_process");
+const path = require("path");
+
+const androidHome =
+  process.env.ANDROID_HOME ||
+  process.env.ANDROID_SDK_ROOT ||
+  (process.env.LOCALAPPDATA
+    ? path.join(process.env.LOCALAPPDATA, "Android", "Sdk")
+    : undefined);
+
+if (androidHome) {
+  process.env.ANDROID_HOME = androidHome;
+  process.env.ANDROID_SDK_ROOT = androidHome;
+  process.env.PATH = [
+    path.join(androidHome, "platform-tools"),
+    path.join(androidHome, "emulator"),
+    process.env.PATH || "",
+  ].join(path.delimiter);
+}
 
 function run(command, args) {
   const result = spawnSync(command, args, {
@@ -8,7 +26,7 @@ function run(command, args) {
 
   return {
     ok: result.status === 0,
-    output: `${result.stdout || ""}${result.stderr || ""}`.trim(),
+    output: `${result.stdout || ""}${result.stderr || ""}${result.error || ""}`.trim(),
   };
 }
 
