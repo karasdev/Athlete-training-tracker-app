@@ -1,10 +1,14 @@
 {
-  "name": "my-mobile-app",
+  "name": "athlete-training-tracker",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
     "start": "node ./scripts/start-android-dev-client.js",
     "start:clear": "node ./scripts/start-android-dev-client.js --clear",
+    "backend": "node ./scripts/run-backend.js",
+    "install:android": "node ./scripts/install-android-dev-client.js",
+    "build:apk": "node ./scripts/build-android-apk.js",
+    "build:apk:debug": "node ./scripts/build-android-apk.js --debug",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "npm run start",
     "ios": "expo start --ios",

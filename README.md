@@ -1,86 +1,97 @@
-# Welcome to your Expo app 👋
+# Athlete Training Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile workout tracking app built with Expo React Native, Spring Boot, and PostgreSQL.
 
-## Get started
+## Get Started
 
-1. Install dependencies
+Install dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-2. Start the app
+Start the mobile app:
 
-   ```bash
-   npm start
-   ```
+```bash
+npm start
+```
 
-   Clear Metro cache if you see stale behavior:
+If Android says no development build is installed, install it once on the emulator:
 
-   ```bash
-   npm run start:clear
-   ```
+```bash
+npm run install:android
+```
 
-The app talks to the **Java REST API** (`extra.apiBaseUrl` in `app.json`, often `http://10.0.2.2:8080` on Android emulators). Run PostgreSQL and the backend locally first (see below).
+After the install finishes, use `npm start` for normal daily development.
 
-## Frontend structure
+Clear Metro cache if you see stale behavior:
 
-- `app/` contains Expo Router screens and navigation groups only.
-- `features/auth/` contains auth state, secure auth storage, and auth-specific UI.
-- `features/workouts/` contains workout types, local storage, workout notifications, and workout-specific UI.
+```bash
+npm run start:clear
+```
+
+The app talks to the Java REST API through `extra.apiBaseUrl` in `app.json`. On Android emulators this is usually `http://10.0.2.2:8080`. Run PostgreSQL and the backend locally first.
+
+## Frontend Structure
+
+- `app/` contains Expo Router screens and navigation groups.
+- `features/auth/` contains auth state, secure auth storage, and auth UI.
+- `features/home/` contains dashboard-specific UI.
+- `features/workouts/` contains workout types, storage, notifications, and workout UI.
 - `features/profile/` contains profile storage.
 - `features/shared/` contains shared app infrastructure such as API helpers.
 - `components/` is for generic reusable UI.
 
 ## Backend & PostgreSQL
 
-- **Registration and login** hit `POST /api/v1/auth/register` and `POST /api/v1/auth/login`. User rows are stored in PostgreSQL table **`app_users`** via Spring Data JPA (`AuthService.register` → `users.save(...)`).
-- Configure JDBC in `backend/src/main/resources/application.properties` (URL, user, password for your DB).
-- Workout-save notifications are local app notifications created on the device with `expo-notifications`; no external push service setup is required.
-- Run the API:
+Registration and login hit `POST /api/v1/auth/register` and `POST /api/v1/auth/login`. User rows are stored in PostgreSQL table `app_users`.
 
-  ```bash
-  cd backend
-  # PowerShell example:
-  # $env:DB_PASSWORD="your-postgres-password"
-  mvn spring-boot:run
-  ```
+Configure JDBC in `backend/src/main/resources/application.properties`, then run:
 
-### Verify registration in PostgreSQL
+```bash
+npm run backend
+```
 
-After registering in the app:
+The local runner uses these default PostgreSQL values unless you override them with environment variables:
+
+```powershell
+DB_URL=jdbc:postgresql://127.0.0.1:5432/athlete_training
+DB_USERNAME=karasdev
+DB_PASSWORD=123123
+```
+
+After registering in the app, verify the database:
 
 ```sql
 SELECT id, email, created_at FROM app_users ORDER BY created_at DESC LIMIT 10;
 ```
 
-You should see the email you used. Registrations are stored only in your PostgreSQL database (table `app_users`).
+Workout-save notifications are local app notifications created on the device with `expo-notifications`; no external push service setup is required.
 
-## LDPlayer / adb (optional)
+## Build Android APK
 
-```powershell
-cd C:\Users\Administrator\Documents\workspace\my-mobile-app
-adb kill-server
-adb start-server
-adb connect 127.0.0.1:5555
-adb devices
-npx expo start --localhost
-```
-
-Another shell:
+Build a release APK:
 
 ```powershell
-adb -s 127.0.0.1:5555 reverse tcp:8081 tcp:8081
-adb -s 127.0.0.1:5555 shell am start -a android.intent.action.VIEW -d "exp://127.0.0.1:8081"
+npm run build:apk
 ```
 
-## Learn more
+The APK is created at:
+
+```powershell
+dist\athlete-training-tracker-release.apk
+```
+
+Build a development APK:
+
+```powershell
+npm run build:apk:debug
+```
+
+For Google Play production distribution, build an Android App Bundle (`.aab`) and use a real release keystore instead of the debug signing config.
+
+## Learn More
 
 - [Expo documentation](https://docs.expo.dev/)
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
-
-## Join the community
-
-- [Expo on GitHub](https://github.com/expo/expo)
-- [Discord community](https://chat.expo.dev)
+- [React Native documentation](https://reactnative.dev/)
+- [Spring Boot documentation](https://spring.io/projects/spring-boot)
