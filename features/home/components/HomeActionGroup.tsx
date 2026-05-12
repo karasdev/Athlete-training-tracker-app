@@ -56,14 +56,14 @@ export default function HomeActionGroup() {
               ))}
             </View>
           </View>
-          <Text style={styles.folderLabel}>App</Text>
+          <Text style={styles.folderLabel}>Training</Text>
         </Pressable>
       </View>
 
       <Modal transparent visible={expanded} animationType="fade">
         <Pressable style={styles.backdrop} onPress={() => setExpanded(false)}>
           <View style={styles.unfoldedPanel}>
-            <Text style={styles.panelTitle}>App</Text>
+            <Text style={styles.panelTitle}>Training</Text>
             <View style={styles.appGrid}>
               {actions.map((action) => (
                 <Pressable
@@ -89,6 +89,7 @@ export default function HomeActionGroup() {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
     marginBottom: 22,
     marginTop: 24,
   },
@@ -155,7 +156,6 @@ const styles = StyleSheet.create({
   },
   folderTile: {
     alignItems: "center",
-    alignSelf: "flex-start",
     justifyContent: "center",
     minHeight: 128,
     width: 108,
