@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
 import { Workout } from "@/features/workouts/types";
 import { getWorkouts } from "@/features/workouts/workoutStorage";
 import WorkoutCard from "@/features/workouts/components/WorkoutCard";
 import { useAuth } from "@/features/auth/AuthContext";
+import HomeActionGroup from "@/features/home/components/HomeActionGroup";
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -43,31 +44,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View style={styles.menu}>
-        <Link href="/add-workout" asChild>
-          <TouchableOpacity style={styles.menuButton}>
-            <Text style={styles.menuText}>Add Workout</Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/history" asChild>
-          <TouchableOpacity style={styles.menuButton}>
-            <Text style={styles.menuText}>History</Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/progress" asChild>
-          <TouchableOpacity style={styles.menuButton}>
-            <Text style={styles.menuText}>Progress</Text>
-          </TouchableOpacity>
-        </Link>
-
-        <Link href="/profile" asChild>
-          <TouchableOpacity style={styles.menuButton}>
-            <Text style={styles.menuText}>Profile</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
+      <HomeActionGroup />
 
       <Text style={styles.sectionTitle}>Recent Workouts</Text>
 
@@ -129,21 +106,6 @@ const styles = StyleSheet.create({
   statLabel: {
     marginTop: 4,
     color: "#6b7280",
-  },
-  menu: {
-    marginTop: 20,
-    gap: 10,
-  },
-  menuButton: {
-    backgroundColor: "#2563eb",
-    padding: 16,
-    borderRadius: 14,
-  },
-  menuText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "700",
-    textAlign: "center",
   },
   sectionTitle: {
     fontSize: 20,
