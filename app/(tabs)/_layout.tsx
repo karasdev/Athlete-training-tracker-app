@@ -46,20 +46,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add-workout"
-        options={{
-          title: "Add",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons color={color} name="add-circle-outline" size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="history"
         options={{
           title: "History",
           tabBarIcon: ({ color, size }) => (
             <Ionicons color={color} name="list-outline" size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="add-workout"
+        options={{
+          title: "Add",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons color={color} name="add-circle-outline" size={size} />
           ),
         }}
       />

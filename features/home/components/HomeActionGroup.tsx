@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Href, Link } from "expo-router";
+import { Href, router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type ActionItem = {
@@ -17,13 +17,17 @@ const actions: ActionItem[] = [
 
 export default function HomeActionGroup() {
   return (
-    <View style={styles.group}>
-      {actions.map((action, index) => {
-        const isLast = index === actions.length - 1;
+    <View style={styles.container}>
+      <Text style={styles.heading}>App</Text>
 
-        return (
-          <Link key={action.href.toString()} href={action.href} asChild>
+      <View style={styles.group}>
+        {actions.map((action, index) => {
+          const isLast = index === actions.length - 1;
+
+          return (
             <Pressable
+              key={action.href.toString()}
+              onPress={() => router.push(action.href)}
               style={({ pressed }) => [
                 styles.row,
                 !isLast && styles.rowDivider,
@@ -36,20 +40,29 @@ export default function HomeActionGroup() {
               <Text style={styles.label}>{action.label}</Text>
               <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
             </Pressable>
-          </Link>
-        );
-      })}
+          );
+        })}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
+  heading: {
+    color: "#6b7280",
+    fontSize: 13,
+    fontWeight: "800",
+    marginBottom: 8,
+    textTransform: "uppercase",
+  },
   group: {
     backgroundColor: "#ffffff",
     borderColor: "#e5e7eb",
     borderRadius: 8,
     borderWidth: 1,
-    marginTop: 20,
     overflow: "hidden",
   },
   row: {
