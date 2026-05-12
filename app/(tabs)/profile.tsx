@@ -2,8 +2,8 @@ import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import PrimaryButton from "../../components/PrimaryButton";
-import { useAuth } from "../../contexts/AuthContext";
-import { getProfile, saveProfile } from "../../utils/profileStorage";
+import { useAuth } from "@/features/auth/AuthContext";
+import { getProfile, saveProfile } from "@/features/profile/profileStorage";
 
 export default function ProfileScreen() {
   const [name, setName] = useState("");
@@ -11,20 +11,20 @@ export default function ProfileScreen() {
   const [goal, setGoal] = useState("");
   const { logout, user } = useAuth();
 
-  useFocusEffect(
-    useCallback(() => {
-      loadProfile();
-    }, [user?.id])
-  );
-
-  async function loadProfile() {
+  const loadProfile = useCallback(async () => {
     if (!user?.id) return;
     const profile = await getProfile(user.id);
 
     setName(profile.name);
     setSport(profile.sport);
     setGoal(profile.goal);
-  }
+  }, [user?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+    }, [loadProfile])
+  );
 
   async function handleSave() {
     if (!user?.id) return;

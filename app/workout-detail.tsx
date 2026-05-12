@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
-import { Workout } from "../types/workout";
-import { deleteWorkout, getWorkoutById } from "../utils/workoutStorage";
+import { Workout } from "@/features/workouts/types";
+import { deleteWorkout, getWorkoutById } from "@/features/workouts/workoutStorage";
 import PrimaryButton from "../components/PrimaryButton";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 
 export default function WorkoutDetailScreen() {
   const { user } = useAuth();

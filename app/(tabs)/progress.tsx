@@ -1,25 +1,25 @@
 import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect } from "expo-router";
-import { Workout } from "../../types/workout";
-import { getWorkouts } from "../../utils/workoutStorage";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
+import { Workout } from "@/features/workouts/types";
+import { getWorkouts } from "@/features/workouts/workoutStorage";
 
 export default function ProgressScreen() {
   const { user } = useAuth();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadWorkouts();
-    }, [user?.id])
-  );
-
-  async function loadWorkouts() {
+  const loadWorkouts = useCallback(async () => {
     if (!user?.id) return;
     const data = await getWorkouts(user.id);
     setWorkouts(data);
-  }
+  }, [user?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadWorkouts();
+    }, [loadWorkouts])
+  );
 
   const totalWorkouts = workouts.length;
   const totalMinutes = workouts.reduce((sum, workout) => sum + workout.duration, 0);

@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
-import AccountMenu from "../../components/AccountMenu";
-import { useAuth } from "../../contexts/AuthContext";
+import AccountMenu from "@/features/auth/components/AccountMenu";
+import { useAuth } from "@/features/auth/AuthContext";
 
 export default function TabLayout() {
   const { user } = useAuth();

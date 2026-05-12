@@ -1,26 +1,26 @@
 import { useCallback, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
-import { getWorkouts } from "../../utils/workoutStorage";
-import { Workout } from "../../types/workout";
-import WorkoutCard from "../../components/WorkoutCard";
-import { useAuth } from "../../contexts/AuthContext";
+import { Workout } from "@/features/workouts/types";
+import { getWorkouts } from "@/features/workouts/workoutStorage";
+import WorkoutCard from "@/features/workouts/components/WorkoutCard";
+import { useAuth } from "@/features/auth/AuthContext";
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadWorkouts();
-    }, [user?.id])
-  );
-
-  async function loadWorkouts() {
+  const loadWorkouts = useCallback(async () => {
     if (!user?.id) return;
     const data = await getWorkouts(user.id);
     setWorkouts(data);
-  }
+  }, [user?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadWorkouts();
+    }, [loadWorkouts])
+  );
 
   const totalWorkouts = workouts.length;
   const totalMinutes = workouts.reduce((sum, workout) => sum + workout.duration, 0);

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
 import PrimaryButton from "../../components/PrimaryButton";
-import { addWorkout } from "../../utils/workoutStorage";
-import { Workout } from "../../types/workout";
-import { apiFetch, throwIfNotOk } from "../../utils/api";
-import { useAuth } from "../../contexts/AuthContext";
-import { scheduleWorkoutSavedNotification } from "../../utils/notifications";
+import { useAuth } from "@/features/auth/AuthContext";
+import { apiFetch, throwIfNotOk } from "@/features/shared/api";
+import { Workout } from "@/features/workouts/types";
+import { scheduleWorkoutSavedNotification } from "@/features/workouts/workoutNotifications";
+import { addWorkout } from "@/features/workouts/workoutStorage";
 
 export default function AddWorkoutScreen() {
   const { user } = useAuth();

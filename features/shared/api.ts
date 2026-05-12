@@ -1,5 +1,5 @@
 import Constants from "expo-constants";
-import { getStoredToken } from "./authStorage";
+import { getStoredToken } from "@/features/auth/authStorage";
 
 export function getApiBaseUrl(): string {
   const extra = Constants.expoConfig?.extra as { apiBaseUrl?: string } | undefined;

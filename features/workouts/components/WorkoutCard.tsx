@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Workout } from "../types/workout";
+import { Workout } from "@/features/workouts/types";
 
 type Props = {
   workout: Workout;

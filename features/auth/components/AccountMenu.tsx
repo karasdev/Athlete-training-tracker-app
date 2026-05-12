@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 
 export default function AccountMenu() {
   const { logout, user } = useAuth();

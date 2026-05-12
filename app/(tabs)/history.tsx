@@ -1,27 +1,27 @@
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, StyleSheet } from "react-native";
 import { Link, useFocusEffect } from "expo-router";
-import WorkoutCard from "../../components/WorkoutCard";
-import { getWorkouts } from "../../utils/workoutStorage";
-import { Workout } from "../../types/workout";
-import { useAuth } from "../../contexts/AuthContext";
+import WorkoutCard from "@/features/workouts/components/WorkoutCard";
+import { useAuth } from "@/features/auth/AuthContext";
+import { Workout } from "@/features/workouts/types";
+import { getWorkouts } from "@/features/workouts/workoutStorage";
 
 export default function HistoryScreen() {
   const { user } = useAuth();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [search, setSearch] = useState("");
 
-  useFocusEffect(
-    useCallback(() => {
-      loadWorkouts();
-    }, [user?.id])
-  );
-
-  async function loadWorkouts() {
+  const loadWorkouts = useCallback(async () => {
     if (!user?.id) return;
     const data = await getWorkouts(user.id);
     setWorkouts(data);
-  }
+  }, [user?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadWorkouts();
+    }, [loadWorkouts])
+  );
 
   const filteredWorkouts = workouts.filter((workout) =>
     workout.type.toLowerCase().includes(search.toLowerCase())

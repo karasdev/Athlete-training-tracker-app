@@ -5,8 +5,8 @@ import {
   setStoredToken,
   setStoredUser,
   StoredUser,
-} from "../utils/authStorage";
-import { apiFetch, apiFetchJson } from "../utils/api";
+} from "./authStorage";
+import { apiFetchJson } from "@/features/shared/api";
 
 type AuthContextType = {
   user: StoredUser | null;

@@ -24,6 +24,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 The app talks to the **Java REST API** (`extra.apiBaseUrl` in `app.json`, often `http://10.0.2.2:8080` on Android emulators). Run PostgreSQL and the backend locally first (see below).
 
+## Frontend structure
+
+- `app/` contains Expo Router screens and navigation groups only.
+- `features/auth/` contains auth state, secure auth storage, and auth-specific UI.
+- `features/workouts/` contains workout types, local storage, workout notifications, and workout-specific UI.
+- `features/profile/` contains profile storage.
+- `features/shared/` contains shared app infrastructure such as API helpers.
+- `components/` is for generic reusable UI.
+
 ## Backend & PostgreSQL
 
 - **Registration and login** hit `POST /api/v1/auth/register` and `POST /api/v1/auth/login`. User rows are stored in PostgreSQL table **`app_users`** via Spring Data JPA (`AuthService.register` → `users.save(...)`).

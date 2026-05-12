@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import { router } from "expo-router";
 import PrimaryButton from "../components/PrimaryButton";
-import { apiFetch, throwIfNotOk } from "../utils/api";
+import { apiFetch, throwIfNotOk } from "@/features/shared/api";
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");

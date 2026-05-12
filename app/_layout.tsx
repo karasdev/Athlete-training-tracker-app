@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import AccountMenu from "../components/AccountMenu";
-import { AuthProvider } from "../contexts/AuthContext";
+import AccountMenu from "@/features/auth/components/AccountMenu";
+import { AuthProvider } from "@/features/auth/AuthContext";
 
 function AppStack() {
   return (

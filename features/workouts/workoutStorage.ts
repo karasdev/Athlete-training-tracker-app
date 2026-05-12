@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import { Workout } from "../types/workout";
+import { Workout } from "./types";
 
 const WORKOUTS_KEY = "workouts";
 
