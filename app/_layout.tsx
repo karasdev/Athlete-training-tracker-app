@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { Stack } from "expo-router";
 import AccountMenu from "@/features/auth/components/AccountMenu";
 import { AuthProvider } from "@/features/auth/AuthContext";
@@ -19,7 +20,7 @@ function AppStack() {
         },
       }}
     >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
       <Stack.Screen name="workout-detail" options={{ title: "Workout Detail" }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />

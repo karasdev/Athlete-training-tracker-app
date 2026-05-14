@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
-import PrimaryButton from "../../components/PrimaryButton";
+import PrimaryButton from "@/components/PrimaryButton";
 import { useAuth } from "@/features/auth/AuthContext";
 import { getProfile, saveProfile } from "@/features/profile/profileStorage";
 

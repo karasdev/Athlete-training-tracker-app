@@ -35,6 +35,8 @@ The app talks to the Java REST API through `extra.apiBaseUrl` in `app.json`. On 
 ## Frontend Structure
 
 - `app/` contains Expo Router screens and navigation groups.
+- `app/(drawer)/` wraps the authenticated app with a side menu.
+- `app/(drawer)/(tabs)/` contains the bottom tab screens for daily workout navigation.
 - `features/auth/` contains auth state, secure auth storage, and auth UI.
 - `features/home/` contains dashboard-specific UI.
 - `features/workouts/` contains workout types, storage, notifications, and workout UI.

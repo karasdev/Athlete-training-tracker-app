@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router } from "expo-router";
-import PrimaryButton from "../../components/PrimaryButton";
+import PrimaryButton from "@/components/PrimaryButton";
 import { useAuth } from "@/features/auth/AuthContext";
 import { apiFetch, throwIfNotOk } from "@/features/shared/api";
 import { Workout } from "@/features/workouts/types";

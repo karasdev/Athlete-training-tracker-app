@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Redirect, Tabs } from "expo-router";
 import AccountMenu from "@/features/auth/components/AccountMenu";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -13,6 +14,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerLeft: () => <DrawerToggleButton tintColor="#ffffff" />,
         headerRight: () => <AccountMenu />,
         headerStyle: {
           backgroundColor: "#2563eb",
