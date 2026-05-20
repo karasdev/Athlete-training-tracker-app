@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
   },
   link: {
     textAlign: "center",
-    color: "#2563eb",
+    color: "#16a34a",
     marginTop: 20,
     fontSize: 16,
   },
   forgotLink: {
     textAlign: "center",
-    color: "#2563eb",
+    color: "#16a34a",
     marginTop: 4,
     fontSize: 14,
     fontWeight: "700",

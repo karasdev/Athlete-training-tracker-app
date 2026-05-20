@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#2563eb",
+    color: "#16a34a",
   },
   statLabel: {
     marginTop: 4,

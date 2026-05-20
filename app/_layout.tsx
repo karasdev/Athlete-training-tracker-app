@@ -9,7 +9,7 @@ function AppStack() {
       screenOptions={{
         headerRight: () => <AccountMenu />,
         headerStyle: {
-          backgroundColor: "#2563eb",
+          backgroundColor: "#16a34a",
         },
         headerTintColor: "#ffffff",
         headerTitleStyle: {
