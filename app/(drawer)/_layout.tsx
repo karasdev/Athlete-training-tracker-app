@@ -18,6 +18,7 @@ const drawerItems: DrawerItem[] = [
   { href: "/", icon: "grid-outline", label: "Dashboard" },
   { href: "/add-workout", icon: "add-circle-outline", label: "Add Workout" },
   { href: "/history", icon: "list-outline", label: "History" },
+  { href: "/calendar", icon: "calendar-outline", label: "Calendar" },
   { href: "/progress", icon: "stats-chart-outline", label: "Progress" },
   { href: "/profile", icon: "person-outline", label: "Profile" },
 ];
@@ -69,7 +70,7 @@ function AppDrawerContent(props: DrawerContentComponentProps) {
               <Ionicons
                 name={item.icon}
                 size={21}
-                color={active ? "#2563eb" : "#4b5563"}
+                color={active ? "#16a34a" : "#4b5563"}
               />
               <Text
                 style={[styles.menuLabel, active && styles.menuLabelActive]}
@@ -124,7 +125,7 @@ export default function DrawerLayout() {
 const styles = StyleSheet.create({
   brandIcon: {
     alignItems: "center",
-    backgroundColor: "#2563eb",
+    backgroundColor: "#16a34a",
     borderRadius: 8,
     height: 48,
     justifyContent: "center",
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
   },
   menuItemActive: {
-    backgroundColor: "#eff6ff",
+    backgroundColor: "#ecfdf5",
   },
   menuLabel: {
     color: "#374151",
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   menuLabelActive: {
-    color: "#2563eb",
+    color: "#16a34a",
     fontWeight: "800",
   },
   menuSection: {

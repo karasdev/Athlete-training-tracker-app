@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     width: "48%",
   },
   value: {
-    color: "#2563eb",
+    color: "#16a34a",
     fontSize: 28,
     fontWeight: "800",
   },

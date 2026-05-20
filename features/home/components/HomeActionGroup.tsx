@@ -12,6 +12,7 @@ type ActionItem = {
 const actions: ActionItem[] = [
   { href: "/add-workout", icon: "add-circle-outline", label: "Add Workout" },
   { href: "/history", icon: "time-outline", label: "History" },
+  { href: "/calendar", icon: "calendar-outline", label: "Calendar" },
   { href: "/progress", icon: "analytics-outline", label: "Progress" },
   { href: "/profile", icon: "person-circle-outline", label: "Profile" },
 ];
@@ -44,14 +45,14 @@ export default function HomeActionGroup() {
             <View style={styles.previewRow}>
               {actions.slice(0, 2).map((action) => (
                 <View key={action.href.toString()} style={styles.previewIcon}>
-                  <Ionicons name={action.icon} size={17} color="#2563eb" />
+                  <Ionicons name={action.icon} size={17} color="#16a34a" />
                 </View>
               ))}
             </View>
             <View style={styles.previewRow}>
-              {actions.slice(2).map((action) => (
+              {actions.slice(2, 4).map((action) => (
                 <View key={action.href.toString()} style={styles.previewIcon}>
-                  <Ionicons name={action.icon} size={17} color="#2563eb" />
+                  <Ionicons name={action.icon} size={17} color="#16a34a" />
                 </View>
               ))}
             </View>
@@ -72,7 +73,7 @@ export default function HomeActionGroup() {
                   style={({ pressed }) => [styles.appTile, pressed && styles.tilePressed]}
                 >
                   <View style={styles.appIconWrap}>
-                    <Ionicons name={action.icon} size={28} color="#2563eb" />
+                    <Ionicons name={action.icon} size={28} color="#16a34a" />
                   </View>
                   <Text numberOfLines={2} style={styles.appLabel}>
                     {action.label}
@@ -102,8 +103,8 @@ const styles = StyleSheet.create({
   },
   appIconWrap: {
     alignItems: "center",
-    backgroundColor: "#eef4ff",
-    borderColor: "#dbeafe",
+    backgroundColor: "#ecfdf5",
+    borderColor: "#bbf7d0",
     borderRadius: 18,
     borderWidth: 1,
     height: 64,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     minHeight: 112,
-    width: "50%",
+    width: "33.333%",
   },
   backdrop: {
     alignItems: "center",
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
   },
   previewIcon: {
     alignItems: "center",
-    backgroundColor: "#eef4ff",
+    backgroundColor: "#ecfdf5",
     borderRadius: 10,
     height: 31,
     justifyContent: "center",
