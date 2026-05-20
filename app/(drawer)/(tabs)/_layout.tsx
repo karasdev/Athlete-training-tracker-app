@@ -17,13 +17,13 @@ export default function TabLayout() {
         headerLeft: () => <DrawerToggleButton tintColor="#ffffff" />,
         headerRight: () => <AccountMenu />,
         headerStyle: {
-          backgroundColor: "#2563eb",
+          backgroundColor: "#16a34a",
         },
         headerTintColor: "#ffffff",
         headerTitleStyle: {
           fontWeight: "700",
         },
-        tabBarActiveTintColor: "#2563eb",
+        tabBarActiveTintColor: "#16a34a",
         tabBarInactiveTintColor: "#6b7280",
         tabBarLabelStyle: {
           fontSize: 12,
@@ -71,6 +71,16 @@ export default function TabLayout() {
           title: "Progress",
           tabBarIcon: ({ color, size }) => (
             <Ionicons color={color} name="stats-chart-outline" size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="calendar"
+        options={{
+          href: null,
+          title: "Calendar",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons color={color} name="calendar-outline" size={size} />
           ),
         }}
       />

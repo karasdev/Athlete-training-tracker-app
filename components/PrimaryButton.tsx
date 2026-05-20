@@ -15,7 +15,7 @@ export default function PrimaryButton({ title, onPress }: Props) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#16a34a",
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,

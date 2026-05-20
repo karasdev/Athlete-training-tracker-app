@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoText: {
-    color: "#2563eb",
+    color: "#16a34a",
     fontWeight: "600",
   },
   notes: {
